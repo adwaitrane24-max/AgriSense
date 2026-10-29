@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="intro">
+  <h1>Check a crop leaf for disease signs</h1>
+  <p>Upload one photo of a single <strong>tomato, potato, corn or bell pepper</strong> leaf.
+     LeafCheck shows its three most likely classes out of 19.</p>
+</section>
+
+<div class="grid">
+  <section class="card">
+    <h2>1. Upload a leaf photo</h2>
+    <form id="upload-form">
+      <label id="dropzone" class="dropzone" for="file-input">
+        <img id="preview" alt="" hidden>
+        <span id="drop-text">Drag a JPG or PNG here, or <u>browse</u><br>
+          <small>Max {{ max_mb }} MB &middot; one leaf, plain background works best</small></span>
+      </label>
+      <input id="file-input" name="image" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" hidden>
+      <button id="submit-btn" class="btn" type="submit" disabled>Analyse leaf</button>
+    </form>
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" aria-live="polite">
+    <h2>2. Result</h2>
+    <div id="placeholder" class="placeholder">Your result will appear here.</div>
+
+    <div id="result" hidden>
+      <div class="badges">
+        <span id="cache-badge" class="badge badge-cache" hidden>&#9889; from cache</span>
+        <span id="time-badge" class="badge"></span>
+      </div>
+
+      <div id="verdict" class="verdict">
+        <div class="verdict-label">Most likely</div>
+        <div id="verdict-crop" class="verdict-crop"></div>
+        <div id="verdict-condition" class="verdict-condition"></div>
+      </div>
+
+      <div id="not-sure" class="not-sure" hidden>
+        <strong>Not sure.</strong> <span id="not-sure-msg"></span>
+        <small>Top confidence is below {{ (threshold * 100) | round | int }}%. This can happen with
+          blurry photos, other crops, or images that are not leaves.</small>
+      </div>
+
+      <h3>Top 3 classes</h3>
+      <ol id="top-list" class="top-list"></ol>
+    </div>
+
+    <p class="disclaimer">&#9888; {{ disclaimer }}</p>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}

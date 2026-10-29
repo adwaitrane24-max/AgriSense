@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}LeafCheck{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}">
+      <span class="brand-mark" aria-hidden="true">&#127811;</span> LeafCheck
+    </a>
+    <nav>
+      <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">Analyse</a>
+      <a href="{{ url_for('stats') }}" class="{{ 'active' if request.endpoint == 'stats' }}">Stats</a>
+    </nav>
+  </header>
+
+  {% if demo_mode %}
+  <div class="banner">
+    Demo mode: no trained model found in <code>model/</code>, so results are random placeholders.
+  </div>
+  {% endif %}
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    LeafCheck prototype &middot; CS208 Mini Project &middot; trained on the public PlantVillage dataset &middot;
+    uploads are processed in memory and never stored
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
