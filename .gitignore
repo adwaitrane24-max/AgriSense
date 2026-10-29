@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Dataset and Colab outputs (never commit the dataset)
+data/
+dataset/
+PlantVillage/
+tensorflow_datasets/
+*.zip
+*.h5
+checkpoints/
+model/*
+!model/leafcheck_mobilenetv2.keras
+!model/labels.json
+!model/README.md
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
