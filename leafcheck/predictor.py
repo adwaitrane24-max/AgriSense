@@ -114,6 +114,8 @@ class KerasPredictor:
         outputs = int(self._model.output_shape[-1])
         if outputs != len(self.labels):
             raise ValueError(f"model has {outputs} outputs but labels.json has {len(self.labels)}")
+        # TensorFlow's first call is ~2x slower (graph setup); do it now, not on the first upload.
+        self.predict_proba(np.zeros((1, config.IMG_SIZE, config.IMG_SIZE, 3), dtype=np.float32))
 
     def predict_proba(self, batch: np.ndarray) -> np.ndarray:
         """Run the CNN on a (1, 224, 224, 3) batch; return 19 softmax probabilities."""
