@@ -44,8 +44,6 @@ the same image again, the answer comes back in a few milliseconds from an LRU ca
 | --- | --- |
 | ![Result](docs/screenshot_result.png) | ![Stats](docs/screenshot_stats.png) |
 
-_Take these after the real model is in place and save them in `docs/`._
-
 ## 4. Architecture and request flow
 
 ```
