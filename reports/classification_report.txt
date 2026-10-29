@@ -1,0 +1,25 @@
+                                              precision    recall  f1-score   support
+
+   Corn: Cercospora leaf spot Gray leaf spot      0.891     0.911     0.901        45
+                           Corn: Common rust      1.000     1.000     1.000        45
+                  Corn: Northern Leaf Blight      0.909     0.889     0.899        45
+                               Corn: healthy      1.000     1.000     1.000        45
+                      Pepper: Bacterial spot      0.896     0.956     0.925        45
+                             Pepper: healthy      0.977     0.956     0.966        45
+                        Potato: Early blight      0.957     0.978     0.967        45
+                         Potato: Late blight      0.872     0.911     0.891        45
+                             Potato: healthy      0.955     0.913     0.933        23
+                      Tomato: Bacterial spot      0.667     0.889     0.762        45
+                        Tomato: Early blight      0.792     0.422     0.551        45
+                         Tomato: Late blight      0.848     0.867     0.857        45
+                           Tomato: Leaf Mold      0.759     0.978     0.854        45
+                  Tomato: Septoria leaf spot      0.833     0.667     0.741        45
+Tomato: Spider mites Two-spotted spider mite      0.917     0.733     0.815        45
+                         Tomato: Target Spot      0.776     0.844     0.809        45
+              Tomato: Yellow Leaf Curl Virus      1.000     0.911     0.953        45
+                        Tomato: mosaic virus      0.930     0.889     0.909        45
+                             Tomato: healthy      0.849     1.000     0.918        45
+
+                                    accuracy                          0.879       833
+                                   macro avg      0.886     0.880     0.876       833
+                                weighted avg      0.884     0.879     0.875       833
