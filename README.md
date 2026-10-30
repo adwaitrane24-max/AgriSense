@@ -1,7 +1,7 @@
 # LeafCheck: crop leaf disease detection prototype
 
 CS208 Mini Project (End Semester hackathon), Sardar Patel Institute of Technology, CSE, Sem V, AY 2026-27.
-Team **ATOM0706**.
+Group 32: Sanskruti Mahabal, Vrushabh Pokharkar, Adwait Rane.
 
 LeafCheck is a small web app. You upload one photo of a single crop leaf, and it shows the
 three most likely diseases (or "healthy") with confidence scores. If the model is not confident
@@ -197,13 +197,17 @@ second without TensorFlow.
 
 ## 12. Team and who did what
 
-| Member | Work |
-| --- | --- |
-| Person A (model) | Training and evaluation notebooks, `predictor.py`, `preprocess.py`, model sanity test, reports |
-| Person B (app) | `cache.py`, `hashing.py`, `stats.py`, `service.py`, `app.py`, templates, API tests |
-| Both | README, slides, demo |
+**Group 32**
 
-Git workflow: `main` always runs; every feature was built on its own branch
+| Member | UID | Work |
+| --- | --- | --- |
+| Adwait Rane | 2024800097 | Model: training and evaluation notebooks, `predictor.py`, `preprocess.py`, model sanity test, reports |
+| Vrushabh Pokharkar | 2024800093 | App: `cache.py`, `hashing.py`, `stats.py`, `service.py`, `app.py`, templates, API tests |
+| Sanskruti Mahabal | 2024800094 | Testing and docs: test review, README, viva notes, demo samples, slides |
+| All | | Code reviews, demo rehearsal |
+
+Git workflow: `main` always runs. Every feature was built on its own branch
 (`feature/lru-cache`, `feature/hashing`, `feature/preprocess`, `feature/predictor`,
 `feature/stats`, `feature/web-ui`, `feature/tests`, `feature/training`, `feature/evaluation`,
-`docs/readme`) and merged through a reviewed pull request.
+`docs/readme`, `feature/model-results`) and merged into `main` through pull requests #1–#4.
+The earlier AgriSense prototype is kept on the `archive/agrisense` branch.
