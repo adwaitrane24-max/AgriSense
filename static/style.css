@@ -267,7 +267,7 @@ code { font-size: 0.9em; }
 .insights h3 { margin: 0 0 10px; }
 .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
 .heatmap { margin: 0; }
-.heatmap img { width: 100%; border-radius: 10px; display: block; border: 1px solid var(--border); }
+.heatmap img { width: 100%; max-width: 320px; border-radius: 10px; display: block; border: 1px solid var(--border); }
 .heatmap figcaption { margin-top: 6px; font-size: 0.85rem; }
 .affected { padding: 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); }
 .affected-value { font-size: 1.6rem; font-weight: 700; margin: 6px 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }

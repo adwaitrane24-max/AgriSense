@@ -17,6 +17,7 @@ from typing import Any
 from leafcheck import config
 from leafcheck.cache import LRUCache
 from leafcheck.hashing import fingerprint
+from leafcheck.leaf_analysis import analyse_leaf
 from leafcheck.predictor import Predictor, build_result
 from leafcheck.preprocess import to_model_input, validate_upload
 from leafcheck.stats import Stats
@@ -69,6 +70,7 @@ class LeafCheckService:
             probabilities = self.predictor.predict_proba(batch)
             result = build_result(probabilities, self.predictor.labels)
             result["heatmap"] = self._heatmap(batch, result)
+            result["leaf_analysis"] = analyse_leaf(data)  # colour estimate + photo checks, ~3-11 ms
             with self._cache_lock:
                 self.cache.put(key, result)
             hit = False
