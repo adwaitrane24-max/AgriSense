@@ -243,3 +243,41 @@ code { font-size: 0.9em; }
 .muted { color: var(--muted); }
 
 .footer { text-align: center; color: var(--muted); font-size: 0.82rem; padding: 0 16px 24px; }
+
+/* ---- Sample gallery */
+.gallery { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); }
+.gallery h3 { margin: 0 0 2px; font-size: 0.95rem; }
+.small { font-size: 0.85rem; margin: 0 0 10px; }
+.gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.gallery-item {
+  padding: 0; border: 2px solid var(--border); border-radius: 10px; overflow: hidden;
+  background: var(--bg); cursor: pointer; aspect-ratio: 1;
+}
+.gallery-item:hover, .gallery-item:focus-visible { border-color: var(--accent); }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---- Listen button and quality warnings */
+.badge-listen { cursor: pointer; background: var(--surface); color: var(--accent); border-color: var(--accent); font: inherit; font-size: 0.85rem; }
+.badge-listen:hover { background: var(--accent-soft); }
+.quality-warnings { list-style: none; margin: 0 0 12px; padding: 10px 12px; border-radius: 10px; background: var(--warn-soft); color: var(--warn); font-size: 0.9rem; }
+.quality-warnings li + li { margin-top: 4px; }
+
+/* ---- Leaf insights: heatmap + affected area */
+.insights { margin-top: 16px; }
+.insights h3 { margin: 0 0 10px; }
+.insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+.heatmap { margin: 0; }
+.heatmap img { width: 100%; border-radius: 10px; display: block; border: 1px solid var(--border); }
+.heatmap figcaption { margin-top: 6px; font-size: 0.85rem; }
+.affected { padding: 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); }
+.affected-value { font-size: 1.6rem; font-weight: 700; margin: 6px 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.affected .bar { margin-bottom: 8px; }
+.band { font-size: 0.8rem; font-weight: 600; padding: 2px 10px; border-radius: 999px; color: #fff; }
+.band-none { background: var(--sev-none); }
+.band-mild { background: var(--sev-low); color: #1d2a1f; }
+.band-moderate { background: var(--sev-medium); color: #1d2a1f; }
+.band-severe { background: var(--sev-high); }
+@media (max-width: 760px) {
+  .insights-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+}

@@ -143,9 +143,108 @@
     return li;
   }
 
+  const WARNINGS = ["too_dark", "too_bright", "blurry", "not_leaf"];
+  const BANDS = ["none", "mild", "moderate", "severe"];
+
+  // Heatmap, affected-area meter and photo-quality warnings (all optional fields).
+  function renderInsights(data) {
+    const heatmapBox = document.getElementById("heatmap-box");
+    const affectedBox = document.getElementById("affected-box");
+    const leaf = data.leaf_analysis;
+
+    heatmapBox.hidden = !data.heatmap;
+    if (data.heatmap) document.getElementById("heatmap-img").src = data.heatmap;
+
+    const showAffected = !!leaf && !(leaf.warnings || []).includes("not_leaf");
+    affectedBox.hidden = !showAffected;
+    if (showAffected) {
+      const band = BANDS.includes(leaf.severity_band) ? leaf.severity_band : "none";
+      document.getElementById("affected-pct").textContent = "≈ " + leaf.affected_percent.toFixed(1) + "%";
+      const bandEl = document.getElementById("affected-band");
+      bandEl.textContent = t["band_" + band];
+      bandEl.className = "band band-" + band;
+      document.getElementById("affected-fill").style.width = Math.min(100, leaf.affected_percent) + "%";
+    }
+    document.getElementById("insights").hidden = heatmapBox.hidden && affectedBox.hidden;
+
+    const warnBox = document.getElementById("quality-warnings");
+    const warnings = ((leaf && leaf.warnings) || []).filter((w) => WARNINGS.includes(w));
+    warnBox.replaceChildren(
+      ...warnings.map((w) => {
+        const li = document.createElement("li");
+        li.textContent = "⚠ " + t["warn_" + w];
+        return li;
+      })
+    );
+    warnBox.hidden = warnings.length === 0;
+  }
+
+  // ---- Voice readout (browser speech synthesis, no server or library needed)
+  const VOICE_LANGS = { en: "en-IN", hi: "hi-IN", mr: "mr-IN" };
+  const listenBtn = document.getElementById("listen-btn");
+  let lastResult = null;
+
+  function speechText(data) {
+    if (data.status !== "ok") return t.not_sure_message + " " + t.disclaimer;
+    const p = data.prediction;
+    const parts = [
+      cropName(p) + ", " + conditionName(p) + ". " + t.voice_confidence + " " + Math.round(p.confidence * 100) + "%.",
+    ];
+    if (data.advisory) {
+      parts.push(t.advisory_harm + ": " + data.advisory.harm);
+      parts.push(t.advisory_economic + ": " + data.advisory.economic_risk);
+      parts.push(t.advisory_next_steps + ": " + data.advisory.next_steps.join(" "));
+    }
+    parts.push(t.disclaimer);
+    return parts.join(" ");
+  }
+
+  function setListening(on) {
+    listenBtn.textContent = (on ? "⏹ " + t.stop_listening : "🔊 " + t.listen);
+  }
+
+  listenBtn.addEventListener("click", () => {
+    if (!("speechSynthesis" in window)) {
+      showError(t.voice_unavailable);
+      return;
+    }
+    if (speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+      setListening(false);
+      return;
+    }
+    if (!lastResult) return;
+    const utterance = new SpeechSynthesisUtterance(speechText(lastResult));
+    utterance.lang = VOICE_LANGS[lang] || "en-IN";
+    const voice = speechSynthesis.getVoices().find((v) => v.lang === utterance.lang)
+      || speechSynthesis.getVoices().find((v) => v.lang.startsWith(lang));
+    if (voice) utterance.voice = voice;
+    utterance.onend = () => setListening(false);
+    setListening(true);
+    speechSynthesis.speak(utterance);
+  });
+
+  // ---- Sample gallery: click a thumbnail to analyse it straight away
+  document.querySelectorAll(".gallery-item").forEach((item) =>
+    item.addEventListener("click", async () => {
+      try {
+        const response = await fetch(item.querySelector("img").src);
+        const blob = await response.blob();
+        choose(new File([blob], item.dataset.sample, { type: blob.type || "image/jpeg" }));
+        form.requestSubmit();
+      } catch (err) {
+        showError(t.error_network);
+      }
+    })
+  );
+
   function render(data) {
     placeholder.hidden = true;
     resultBox.hidden = false;
+    lastResult = data;
+    if ("speechSynthesis" in window) speechSynthesis.cancel();
+    setListening(false);
+    renderInsights(data);
 
     document.getElementById("cache-badge").hidden = !data.from_cache;
     document.getElementById("time-badge").textContent = data.elapsed_ms.toFixed(1) + " ms";

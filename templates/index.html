@@ -18,6 +18,18 @@
       <button id="submit-btn" class="btn" type="submit" disabled>{{ t.btn_analyse }}</button>
     </form>
     <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="gallery">
+      <h3>{{ t.gallery_title }}</h3>
+      <p class="muted small">{{ t.gallery_hint }}</p>
+      <div class="gallery-grid">
+        {% for name in samples %}
+        <button type="button" class="gallery-item" data-sample="{{ name }}" title="{{ name }}">
+          <img src="{{ url_for('sample', name=name) }}" alt="{{ name }}" loading="lazy">
+        </button>
+        {% endfor %}
+      </div>
+    </div>
   </section>
 
   <section class="card" aria-live="polite">
@@ -28,7 +40,9 @@
       <div class="badges">
         <span id="cache-badge" class="badge badge-cache" hidden>&#9889; {{ t.from_cache }}</span>
         <span id="time-badge" class="badge"></span>
+        <button type="button" id="listen-btn" class="badge badge-listen">&#128266; {{ t.listen }}</button>
       </div>
+      <ul id="quality-warnings" class="quality-warnings" hidden></ul>
 
       <div id="verdict" class="verdict">
         <div class="verdict-label">{{ t.most_likely }}</div>
@@ -39,6 +53,22 @@
       <div id="not-sure" class="not-sure" hidden>
         <strong id="not-sure-msg">{{ t.not_sure_message }}</strong>
         <small>{{ t.not_sure_explain | replace('{threshold}', (threshold * 100) | round | int | string) }}</small>
+      </div>
+
+      <div id="insights" class="insights" hidden>
+        <h3>{{ t.insights_title }}</h3>
+        <div class="insights-grid">
+          <figure id="heatmap-box" class="heatmap" hidden>
+            <img id="heatmap-img" alt="{{ t.heatmap_title }}">
+            <figcaption><strong>{{ t.heatmap_title }}</strong><br><small>{{ t.heatmap_caption }}</small></figcaption>
+          </figure>
+          <div id="affected-box" class="affected" hidden>
+            <strong>{{ t.affected_title }}</strong>
+            <div class="affected-value"><span id="affected-pct"></span> <span id="affected-band" class="band"></span></div>
+            <div class="bar"><div id="affected-fill" class="bar-fill bar-miss"></div></div>
+            <small class="muted">{{ t.affected_caption }}</small>
+          </div>
+        </div>
       </div>
 
       <div id="advisory" class="advisory" hidden>
