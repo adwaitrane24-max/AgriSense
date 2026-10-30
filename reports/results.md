@@ -69,3 +69,18 @@ field photos (mixed backgrounds, several leaves, different lighting) will be low
   predict): cache miss ~100 ms, cache hit ~0.1 ms (about 900× faster). Model load at startup
   takes ~2.5 s, once.
 - **Sanity test** (`tests/test_model_sanity.py`): 33 / 38 = 86.8 % on 2 test images per class.
+
+## Check on photos outside PlantVillage
+
+Three openly licensed photos from Wikimedia Commons (see `samples/CREDITS.md`):
+
+| Image | True class | LeafCheck top prediction | Result |
+| --- | --- | --- | --- |
+| Potato leaf in a field | Potato late blight | Tomato late blight (88 %) | Right disease, wrong crop |
+| Tomato plant in a field | Tomato Septoria leaf spot | Tomato late blight (79 %) | Right crop, wrong disease |
+| Red coffee mug | not a leaf | **Not sure** (top 39 %) | Threshold works |
+
+Both field photos are wrong, even though the model scores 87.9 % on lab photos. Real photos
+have several leaves, soil and shadows in the frame; PlantVillage has one leaf on a plain
+background. This is the main limitation: field use would need field photos in training. The
+mug shows that the 0.60 threshold catches images that are clearly not leaves.
