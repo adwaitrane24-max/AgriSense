@@ -9,6 +9,7 @@ from flask import Flask, jsonify, render_template, request
 
 from leafcheck import config
 from leafcheck.i18n import LANG_NAMES, normalise_lang, strings_for
+from leafcheck.localise import localise_result
 from leafcheck.predictor import load_predictor
 from leafcheck.preprocess import InvalidImageError
 from leafcheck.service import LeafCheckService
@@ -48,7 +49,8 @@ def create_app(service: Optional[LeafCheckService] = None) -> Flask:
         if upload is None or upload.filename == "":
             return jsonify(error="Please choose an image file to upload."), 400
         try:
-            return jsonify(service.analyse(upload.filename, upload.read()))
+            result = service.analyse(upload.filename, upload.read())
+            return jsonify(localise_result(result, request.form.get("lang")))
         except InvalidImageError as error:
             return jsonify(error=str(error)), 400
 
