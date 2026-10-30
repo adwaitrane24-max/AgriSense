@@ -37,6 +37,18 @@ class LeafCheckService:
         self.stats = Stats()
         self._cache_lock = threading.Lock()  # the cache itself is not thread-safe
 
+    def _heatmap(self, batch: Any, result: dict[str, Any]) -> str | None:
+        """Grad-CAM overlay for a confident prediction, else None.
+
+        Costs about one extra forward + backward pass (~230 ms on CPU), paid only
+        on a cache miss; the image is stored inside the cached result.
+        """
+        make_heatmap = getattr(self.predictor, "heatmap", None)
+        if make_heatmap is None or result["status"] != "ok":
+            return None
+        class_index = self.predictor.labels.index(result["prediction"]["label"])
+        return make_heatmap(batch, class_index)
+
     def analyse(self, filename: str, data: bytes) -> dict[str, Any]:
         """Run the full pipeline for one upload and return the JSON response.
 
@@ -56,6 +68,7 @@ class LeafCheckService:
             batch = to_model_input(data)
             probabilities = self.predictor.predict_proba(batch)
             result = build_result(probabilities, self.predictor.labels)
+            result["heatmap"] = self._heatmap(batch, result)
             with self._cache_lock:
                 self.cache.put(key, result)
             hit = False
