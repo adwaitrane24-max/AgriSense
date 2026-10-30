@@ -71,8 +71,8 @@ def test_strings_for_unknown_language_is_english() -> None:
     assert strings_for("xx") == UI_STRINGS["en"]
 
 
-def test_home_in_hindi(client: FlaskClient) -> None:
-    response = client.get("/?lang=hi")
+def test_analyse_page_in_hindi(client: FlaskClient) -> None:
+    response = client.get("/analyse?lang=hi")
     assert response.status_code == 200
     page = response.get_data(as_text=True)
     assert '<html lang="hi">' in page
@@ -83,7 +83,7 @@ def test_home_in_hindi(client: FlaskClient) -> None:
 
 
 def test_unknown_language_falls_back_to_english(client: FlaskClient) -> None:
-    page = client.get("/?lang=xx").get_data(as_text=True)
+    page = client.get("/analyse?lang=xx").get_data(as_text=True)
     assert '<html lang="en">' in page
     assert UI_STRINGS["en"]["btn_analyse"] in page
 
@@ -94,7 +94,7 @@ def test_stats_in_marathi_keeps_language_in_nav(client: FlaskClient) -> None:
     page = response.get_data(as_text=True)
     assert '<html lang="mr">' in page
     assert UI_STRINGS["mr"]["stats_hit_rate"] in page
-    assert 'href="/?lang=mr"' in page  # the Analyse link keeps the language
+    assert 'href="/analyse?lang=mr"' in page  # the Analyse link keeps the language
 
 
 def test_switcher_links_stay_on_current_page(client: FlaskClient) -> None:
@@ -102,3 +102,10 @@ def test_switcher_links_stay_on_current_page(client: FlaskClient) -> None:
     for code in SUPPORTED_LANGS:
         assert f'href="/stats?lang={code}"' in page
     assert 'aria-current="true">हिंदी</a>' in page
+
+
+def test_landing_page_in_marathi(client: FlaskClient) -> None:
+    page = client.get("/?lang=mr").get_data(as_text=True)
+    assert '<html lang="mr">' in page
+    assert UI_STRINGS["mr"]["land_title"] in page
+    assert 'href="/?lang=hi"' in page  # switcher stays on the landing page

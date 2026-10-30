@@ -19,8 +19,8 @@ def upload(client: FlaskClient, data: bytes, filename: str = "leaf.jpg"):
     )
 
 
-def test_home_page_has_form_and_disclaimer(client: FlaskClient) -> None:
-    response = client.get("/")
+def test_analyse_page_has_form_and_disclaimer(client: FlaskClient) -> None:
+    response = client.get("/analyse")
     assert response.status_code == 200
     page = response.get_data(as_text=True)
     assert 'id="upload-form"' in page
@@ -132,3 +132,12 @@ def test_gallery_sample_route_only_serves_listed_files(client: FlaskClient) -> N
     assert client.get("/samples/tomato_healthy.jpg").status_code == 200
     assert client.get("/samples/CREDITS.md").status_code == 404
     assert client.get("/samples/..%2Fapp.py").status_code == 404
+
+
+def test_landing_page_links_to_analyser(client: FlaskClient) -> None:
+    response = client.get("/")
+    assert response.status_code == 200
+    page = response.get_data(as_text=True)
+    assert 'href="/analyse?lang=en"' in page
+    assert 'id="upload-form"' not in page
+    assert "/samples/tomato_early_blight.jpg" in page
