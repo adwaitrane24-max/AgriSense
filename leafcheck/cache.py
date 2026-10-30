@@ -107,6 +107,14 @@ class LRUCache(Generic[K, V]):
         self._map[key] = node
         self._push_front(node)
 
+    def remove(self, key: K) -> bool:
+        """Delete `key` if present; return True if something was removed. O(1) average."""
+        node = self._map.pop(key, None)
+        if node is None:
+            return False
+        self._unlink(node)
+        return True
+
     def keys_newest_first(self) -> list[K]:
         """Keys ordered from most to least recently used. O(n); for tests/debug."""
         keys: list[K] = []
