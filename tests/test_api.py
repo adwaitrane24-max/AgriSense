@@ -120,3 +120,15 @@ def test_stats_page_renders(client: FlaskClient) -> None:
 def test_health(client: FlaskClient) -> None:
     body = client.get("/health").get_json()
     assert body == {"status": "ok", "demo_mode": True, "classes": 19}
+
+
+def test_result_includes_leaf_analysis_and_heatmap_field(client: FlaskClient) -> None:
+    body = upload(client, make_image_bytes()).get_json()
+    assert set(body["leaf_analysis"]) >= {"affected_percent", "leaf_percent", "warnings", "severity_band"}
+    assert body["heatmap"] is None  # the fake predictor has no heatmap
+
+
+def test_gallery_sample_route_only_serves_listed_files(client: FlaskClient) -> None:
+    assert client.get("/samples/tomato_healthy.jpg").status_code == 200
+    assert client.get("/samples/CREDITS.md").status_code == 404
+    assert client.get("/samples/..%2Fapp.py").status_code == 404
