@@ -5,7 +5,7 @@ Run:  flask --app app run   (Flask finds create_app() automatically)
 
 from typing import Any, Optional
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, abort, jsonify, render_template, request, send_from_directory
 
 from leafcheck import config
 from leafcheck.i18n import LANG_NAMES, normalise_lang, strings_for
@@ -40,6 +40,7 @@ def create_app(service: Optional[LeafCheckService] = None) -> Flask:
             demo_mode=service.demo_mode,
             threshold=config.CONFIDENCE_THRESHOLD,
             max_mb=config.MAX_UPLOAD_BYTES // (1024 * 1024),
+            samples=config.GALLERY_SAMPLES,
             **language_context(),
         )
 
@@ -62,6 +63,13 @@ def create_app(service: Optional[LeafCheckService] = None) -> Flask:
         return render_template(
             "stats.html", stats=snapshot, demo_mode=service.demo_mode, **language_context()
         )
+
+    @app.get("/samples/<name>")
+    def sample(name: str) -> Any:
+        # Only the listed demo files are served; nothing else in samples/ is reachable.
+        if name not in config.GALLERY_SAMPLES:
+            abort(404)
+        return send_from_directory(config.SAMPLES_DIR, name)
 
     @app.get("/health")
     def health() -> Any:

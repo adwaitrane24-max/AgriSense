@@ -9,6 +9,18 @@ MODEL_PATH: Path = MODEL_DIR / "leafcheck_mobilenetv2.keras"
 LABELS_PATH: Path = MODEL_DIR / "labels.json"
 SAMPLES_DIR: Path = ROOT_DIR / "samples"
 
+# Demo images offered in the gallery on the upload page (files in samples/).
+GALLERY_SAMPLES: tuple[str, ...] = (
+    "tomato_early_blight.jpg",
+    "potato_late_blight.jpg",
+    "corn_common_rust.jpg",
+    "pepper_bacterial_spot.jpg",
+    "tomato_healthy.jpg",
+    "potato_healthy.jpg",
+    "field_potato_late_blight.jpg",
+    "not_a_leaf_coffee.jpg",
+)
+
 # Model input
 IMG_SIZE: int = 224  # MobileNetV2 expects 224 x 224 RGB images
 TOP_K: int = 3  # how many classes to show on the result card
