@@ -9,10 +9,15 @@ from flask import Flask, abort, jsonify, render_template, request, send_from_dir
 
 from leafcheck import config
 from leafcheck.i18n import LANG_NAMES, normalise_lang, strings_for
+from leafcheck.advisory import display_name
 from leafcheck.localise import localise_result
 from leafcheck.predictor import load_predictor
 from leafcheck.preprocess import InvalidImageError
 from leafcheck.service import LeafCheckService
+
+
+# Class shown in the landing-page preview card (matches GALLERY_SAMPLES[0]).
+HERO_SAMPLE_LABEL = "Tomato___Early_blight"
 
 
 def language_context() -> dict[str, Any]:
@@ -34,7 +39,19 @@ def create_app(service: Optional[LeafCheckService] = None) -> Flask:
     app.extensions["leafcheck"] = service
 
     @app.get("/")
-    def index() -> str:
+    def home() -> str:
+        crop, condition = display_name(HERO_SAMPLE_LABEL, normalise_lang(request.args.get("lang")))
+        return render_template(
+            "landing.html",
+            demo_mode=service.demo_mode,
+            hero_sample=config.GALLERY_SAMPLES[0],
+            hero_crop=crop,
+            hero_condition=condition,
+            **language_context(),
+        )
+
+    @app.get("/analyse")
+    def analyse() -> str:
         return render_template(
             "index.html",
             demo_mode=service.demo_mode,
