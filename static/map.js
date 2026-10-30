@@ -98,8 +98,11 @@
     $("o-offline").hidden = data.weather.source !== "offline";
     $("o-days").replaceChildren(...data.weather.days.map(dayCard));
 
+    // Show diseases the weather actually favours; if none, the 3 closest (all "low").
+    const elevated = data.risks.filter((r) => r.level !== "low");
+    const shown = (elevated.length ? elevated : data.risks).slice(0, elevated.length ? 8 : 3);
     $("o-risks").replaceChildren(
-      ...data.risks.map((r) => {
+      ...shown.map((r) => {
         const li = el("li", "risk risk-" + r.level);
         const head = el("div", "risk-head");
         head.append(el("strong", null, r.crop_name + " · " + r.disease_name), el("span", "severity severity-" + r.level_class, r.level_text));
