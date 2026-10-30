@@ -1,0 +1,96 @@
+{
+  "level": {
+    "low": {"en": "Low", "hi": "कम", "mr": "कमी"},
+    "medium": {"en": "Medium", "hi": "मध्यम", "mr": "मध्यम"},
+    "high": {"en": "High", "hi": "अधिक", "mr": "जास्त"}
+  },
+  "reason": {
+    "cool_wet": {
+      "en": "Cool, very humid or rainy days favour late blight.",
+      "hi": "ठंडे और बहुत नम या बरसात वाले दिन पछेती झुलसा (लेट ब्लाइट) के लिए अनुकूल होते हैं।",
+      "mr": "थंड आणि खूप दमट किंवा पावसाळी दिवस उशिरा येणाऱ्या करप्याला (लेट ब्लाइट) पोषक असतात."
+    },
+    "warm_humid": {
+      "en": "Warm, humid or rainy days favour leaf-spot and blight diseases.",
+      "hi": "गर्म और नम या बरसात वाले दिन पत्ती धब्बा और झुलसा रोगों के लिए अनुकूल होते हैं।",
+      "mr": "उबदार आणि दमट किंवा पावसाळी दिवस पानांवरील ठिपके आणि करपा रोगांना पोषक असतात."
+    },
+    "warm_rain_splash": {
+      "en": "Warm days with heavy rain can splash bacteria onto leaves.",
+      "hi": "गर्म दिनों में तेज़ बारिश की छींटें जीवाणुओं को पत्तियों तक पहुँचा सकती हैं।",
+      "mr": "उबदार दिवसांत जोरदार पावसाचे शिंतोडे जीवाणू पानांवर पोहोचवू शकतात."
+    },
+    "very_humid": {
+      "en": "Long spells of very humid air favour leaf mold.",
+      "hi": "लंबे समय तक बहुत नम हवा पत्ती फफूंद (लीफ मोल्ड) के लिए अनुकूल होती है।",
+      "mr": "दीर्घकाळ खूप दमट हवा पानांवरील बुरशीला (लीफ मोल्ड) पोषक असते."
+    },
+    "hot_dry": {
+      "en": "Hot, dry days favour spider mites.",
+      "hi": "गर्म और सूखे दिन मकड़ी माइट (स्पाइडर माइट) के लिए अनुकूल होते हैं।",
+      "mr": "उष्ण आणि कोरडे दिवस कोळी (स्पायडर माइट) वाढीसाठी पोषक असतात."
+    },
+    "vector_weather": {
+      "en": "Warm, dry spells favour whiteflies, the insects that spread leaf curl virus.",
+      "hi": "गर्म और सूखा मौसम सफ़ेद मक्खी के लिए अनुकूल है, जो पत्ती मोड़ वायरस फैलाती है।",
+      "mr": "उबदार आणि कोरडे हवामान पांढऱ्या माशीला पोषक असते, जी पर्णगुच्छ (लीफ कर्ल) विषाणू पसरवते."
+    },
+    "not_weather_driven": {
+      "en": "This disease spreads mainly through handling and seed, not through weather.",
+      "hi": "यह रोग मुख्य रूप से हाथों के संपर्क और बीज से फैलता है, मौसम से नहीं।",
+      "mr": "हा रोग मुख्यतः हाताळणी आणि बियाण्यांमधून पसरतो, हवामानामुळे नाही."
+    },
+    "cool_humid": {
+      "en": "Mild, very humid or rainy days favour common rust on maize.",
+      "hi": "हल्के ठंडे और बहुत नम या बरसात वाले दिन मक्का में गेरुआ (कॉमन रस्ट) के लिए अनुकूल होते हैं।",
+      "mr": "सौम्य थंड आणि खूप दमट किंवा पावसाळी दिवस मक्यावरील तांबेरा (कॉमन रस्ट) रोगाला पोषक असतात."
+    },
+    "mild_wet": {
+      "en": "Mild, wet days favour northern leaf blight on maize.",
+      "hi": "हल्के तापमान वाले गीले दिन मक्का में पत्ती झुलसा (नॉर्दर्न लीफ ब्लाइट) के लिए अनुकूल होते हैं।",
+      "mr": "सौम्य तापमानाचे ओले दिवस मक्यावरील पान करपा (नॉर्दर्न लीफ ब्लाइट) रोगाला पोषक असतात."
+    },
+    "warm_very_humid": {
+      "en": "Warm, very humid days favour gray leaf spot on maize.",
+      "hi": "गर्म और बहुत नम दिन मक्का में धूसर पत्ती धब्बा (ग्रे लीफ स्पॉट) के लिए अनुकूल होते हैं।",
+      "mr": "उबदार आणि खूप दमट दिवस मक्यावरील राखाडी पानठिपका (ग्रे लीफ स्पॉट) रोगाला पोषक असतात."
+    }
+  },
+  "tip": {
+    "heavy_rain": {
+      "en": "Heavy rain is expected on {date}: check leaves for new spots a day or two after.",
+      "hi": "{date} को तेज़ बारिश की संभावना है: एक-दो दिन बाद पत्तियों पर नए धब्बे देखें।",
+      "mr": "{date} रोजी जोरदार पावसाची शक्यता आहे: एक-दोन दिवसांनी पानांवर नवीन ठिपके तपासा."
+    },
+    "high_humidity_run": {
+      "en": "Several very humid days start on {date}: inspect leaves more often.",
+      "hi": "{date} से कई दिन बहुत नमी रहेगी: पत्तियों को और अधिक बार देखें।",
+      "mr": "{date} पासून अनेक दिवस खूप दमट हवा राहील: पाने अधिक वेळा तपासा."
+    },
+    "heat": {
+      "en": "A very hot day is expected on {date}: watch for wilting and check plants in the cool morning.",
+      "hi": "{date} को बहुत गर्मी की संभावना है: मुरझाने पर ध्यान दें और ठंडी सुबह पौधों को देखें।",
+      "mr": "{date} रोजी खूप उष्णतेची शक्यता आहे: कोमेजण्याकडे लक्ष द्या आणि थंड सकाळी झाडे तपासा."
+    },
+    "strong_wind": {
+      "en": "Strong wind is expected on {date}: look for torn or broken leaves afterwards.",
+      "hi": "{date} को तेज़ हवा की संभावना है: बाद में फटी या टूटी पत्तियाँ देखें।",
+      "mr": "{date} रोजी जोरदार वाऱ्याची शक्यता आहे: नंतर फाटलेली किंवा तुटलेली पाने पाहा."
+    },
+    "dry_spell": {
+      "en": "A dry spell starts on {date}: look under leaves for mites and watch for leaf curling.",
+      "hi": "{date} से सूखा मौसम रहेगा: पत्तियों के नीचे माइट देखें और पत्तियों के मुड़ने पर ध्यान दें।",
+      "mr": "{date} पासून कोरडे हवामान राहील: पानांच्या खाली कोळी पाहा आणि पाने वळत आहेत का ते लक्ष द्या."
+    },
+    "good_photo_day": {
+      "en": "{date} looks clear: good light to photograph leaves for LeafCheck.",
+      "hi": "{date} को मौसम साफ़ लगता है: LeafCheck के लिए पत्तियों की फ़ोटो लेने हेतु अच्छी रोशनी रहेगी।",
+      "mr": "{date} रोजी हवामान स्वच्छ दिसते: LeafCheck साठी पानांचे फोटो काढायला चांगला प्रकाश असेल."
+    },
+    "contact_kvk": {
+      "en": "If in doubt, show your leaves to a local agriculture expert or Krishi Vigyan Kendra.",
+      "hi": "कोई भी संदेह हो तो अपनी पत्तियाँ स्थानीय कृषि विशेषज्ञ या कृषि विज्ञान केंद्र को दिखाएँ।",
+      "mr": "काही शंका असल्यास आपली पाने स्थानिक कृषी तज्ज्ञांना किंवा कृषी विज्ञान केंद्राला दाखवा."
+    }
+  }
+}
