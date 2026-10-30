@@ -121,6 +121,19 @@ class KerasPredictor:
         """Run the CNN on a (1, 224, 224, 3) batch; return 19 softmax probabilities."""
         return self._model(batch, training=False).numpy()[0]
 
+    def heatmap(self, batch: np.ndarray, class_index: int) -> str | None:
+        """Grad-CAM overlay for `class_index` as a PNG data URL, or None on failure.
+
+        About 2x the cost of one prediction (extra forward + backward pass).
+        Any error is swallowed so a heatmap problem never breaks prediction.
+        """
+        try:
+            from leafcheck.gradcam import compute_heatmap, overlay_png
+
+            return overlay_png(batch, compute_heatmap(self._model, batch, class_index))
+        except Exception:  # noqa: BLE001 - heatmap is optional extra information
+            return None
+
 
 class FakePredictor:
     """Stand-in predictor with no TensorFlow, for tests and demo mode.
@@ -148,6 +161,10 @@ class FakePredictor:
         seed = int((batch.mean() + 1.0) * 1_000_000) % (2**32)
         scores = np.random.default_rng(seed).random(len(self.labels)) ** 8
         return scores / scores.sum()
+
+    def heatmap(self, batch: np.ndarray, class_index: int) -> str | None:
+        """No real model, so no Grad-CAM heatmap. O(1)."""
+        return None
 
 
 def load_predictor() -> tuple[Predictor, bool]:
