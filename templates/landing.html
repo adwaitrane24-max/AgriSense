@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}LeafCheck · {{ t.land_eyebrow }}{% endblock %}
+{% macro icon(name) -%}
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+{%- if name == 'eye' %}<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>
+{%- elif name == 'book' %}<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/>
+{%- elif name == 'voice' %}<path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>
+{%- elif name == 'question' %}<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/>
+{%- elif name == 'bolt' %}<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
+{%- elif name == 'shield' %}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>
+{%- elif name == 'camera' %}<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+{%- elif name == 'upload' %}<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5M12 3v12"/>
+{%- elif name == 'chart' %}<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>
+{%- endif %}
+</svg>
+{%- endmacro %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">{{ t.land_eyebrow }}</span>
+    <h1>{{ t.land_title }}</h1>
+    <p class="lead">{{ t.land_subtitle }}</p>
+    <div class="hero-actions">
+      <a class="btn btn-inline" href="{{ url_for('analyse', lang=lang) }}">{{ t.land_cta }} &rarr;</a>
+      <a class="btn-ghost" href="#how">{{ t.land_cta_secondary }}</a>
+    </div>
+    <p class="trust">{{ t.land_trust }}</p>
+  </div>
+
+  <div class="hero-visual" aria-hidden="true">
+    <div class="preview-card">
+      <img src="{{ url_for('sample', name=hero_sample) }}" alt="">
+      <div class="preview-chip chip-result">
+        <small>{{ t.most_likely }}</small>
+        <strong>{{ hero_crop }}</strong>
+        <span>{{ hero_condition }} · 93.6%</span>
+      </div>
+      <div class="preview-chip chip-cache">&#9889; {{ t.from_cache }} · 0.1 ms</div>
+      <div class="preview-chip chip-risk"><span class="dot"></span>{{ t.severity_label }}: {{ t.severity_medium }}</div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-strip">
+  <div><strong>19</strong><span>{{ t.land_stat_classes }}</span></div>
+  <div><strong>4</strong><span>{{ t.land_stat_crops }}</span></div>
+  <div><strong>95.6%</strong><span>{{ t.land_stat_accuracy }}</span></div>
+  <div><strong>3</strong><span>{{ t.land_stat_languages }}</span></div>
+</section>
+
+<section id="how" class="section">
+  <h2 class="section-title">{{ t.land_how_title }}</h2>
+  <div class="steps">
+    {% for n, ic in [(1, 'camera'), (2, 'upload'), (3, 'chart')] %}
+    <div class="step">
+      <div class="step-icon">{{ icon(ic) }}<span class="step-num">{{ n }}</span></div>
+      <h3>{{ t['land_step' ~ n ~ '_title'] }}</h3>
+      <p>{{ t['land_step' ~ n ~ '_text'] }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">{{ t.land_features_title }}</h2>
+  <div class="features">
+    {% for n, ic in [(1, 'eye'), (2, 'book'), (3, 'voice'), (4, 'question'), (5, 'bolt'), (6, 'shield')] %}
+    <article class="feature">
+      <div class="feature-icon">{{ icon(ic) }}</div>
+      <h3>{{ t['land_feat' ~ n ~ '_title'] }}</h3>
+      <p>{{ t['land_feat' ~ n ~ '_text'] }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">{{ t.land_crops_title }}</h2>
+  <div class="crops">
+    {% for key, n in [('tomato', 10), ('potato', 3), ('corn', 4), ('pepper', 2)] %}
+    <div class="crop">
+      <strong>{{ t['land_crop_' ~ key] }}</strong>
+      <span>{{ t.land_conditions | replace('{n}', n | string) }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section note-card">
+  <div class="feature-icon">{{ icon('shield') }}</div>
+  <div>
+    <h3>{{ t.land_note_title }}</h3>
+    <p>{{ t.land_note_text }}</p>
+  </div>
+</section>
+
+<section class="final-cta">
+  <h2>{{ t.land_final_title }}</h2>
+  <a class="btn btn-inline" href="{{ url_for('analyse', lang=lang) }}">{{ t.land_cta }} &rarr;</a>
+</section>
+{% endblock %}
