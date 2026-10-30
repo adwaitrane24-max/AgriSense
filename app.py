@@ -11,6 +11,7 @@ from leafcheck import config
 from leafcheck.i18n import LANG_NAMES, normalise_lang, strings_for
 from leafcheck.advisory import display_name
 from leafcheck.localise import localise_result
+from leafcheck import districts, outlook
 from leafcheck.predictor import load_predictor
 from leafcheck.preprocess import InvalidImageError
 from leafcheck.service import LeafCheckService
@@ -80,6 +81,28 @@ def create_app(service: Optional[LeafCheckService] = None) -> Flask:
         return render_template(
             "stats.html", stats=snapshot, demo_mode=service.demo_mode, **language_context()
         )
+
+    @app.get("/outlook")
+    def outlook_page() -> str:
+        context = language_context()
+        return render_template(
+            "map.html",
+            demo_mode=service.demo_mode,
+            districts=outlook.district_options(context["lang"]),
+            **context,
+        )
+
+    @app.get("/api/outlook")
+    def outlook_api() -> Any:
+        t = strings_for(normalise_lang(request.args.get("lang")))
+        try:
+            lat = float(request.args["lat"])
+            lon = float(request.args["lon"])
+        except (KeyError, ValueError):
+            return jsonify(error=t["map_outside"]), 400
+        if not districts.in_maharashtra(lat, lon):
+            return jsonify(error=t["map_outside"]), 400
+        return jsonify(outlook.build_outlook(lat, lon, request.args.get("lang")))
 
     @app.get("/samples/<name>")
     def sample(name: str) -> Any:
