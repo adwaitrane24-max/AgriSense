@@ -8,9 +8,16 @@ from typing import Any, Optional
 from flask import Flask, jsonify, render_template, request
 
 from leafcheck import config
+from leafcheck.i18n import LANG_NAMES, normalise_lang, strings_for
 from leafcheck.predictor import load_predictor
 from leafcheck.preprocess import InvalidImageError
 from leafcheck.service import LeafCheckService
+
+
+def language_context() -> dict[str, Any]:
+    """Template variables for the language picked with ``?lang=`` (default English)."""
+    lang = normalise_lang(request.args.get("lang"))
+    return {"lang": lang, "t": strings_for(lang), "lang_names": LANG_NAMES}
 
 
 def create_app(service: Optional[LeafCheckService] = None) -> Flask:
@@ -30,9 +37,9 @@ def create_app(service: Optional[LeafCheckService] = None) -> Flask:
         return render_template(
             "index.html",
             demo_mode=service.demo_mode,
-            disclaimer=config.DISCLAIMER,
             threshold=config.CONFIDENCE_THRESHOLD,
             max_mb=config.MAX_UPLOAD_BYTES // (1024 * 1024),
+            **language_context(),
         )
 
     @app.post("/predict")
@@ -50,7 +57,9 @@ def create_app(service: Optional[LeafCheckService] = None) -> Flask:
         snapshot = service.stats_snapshot()
         if request.args.get("format") == "json":
             return jsonify(snapshot)
-        return render_template("stats.html", stats=snapshot, demo_mode=service.demo_mode)
+        return render_template(
+            "stats.html", stats=snapshot, demo_mode=service.demo_mode, **language_context()
+        )
 
     @app.get("/health")
     def health() -> Any:

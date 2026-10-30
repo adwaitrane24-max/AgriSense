@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,29 +8,34 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="{{ url_for('index') }}">
+    <a class="brand" href="{{ url_for('index', lang=lang) }}">
       <span class="brand-mark" aria-hidden="true">&#127811;</span> LeafCheck
     </a>
-    <nav>
-      <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">Analyse</a>
-      <a href="{{ url_for('stats') }}" class="{{ 'active' if request.endpoint == 'stats' }}">Stats</a>
-    </nav>
+    <div class="topbar-right">
+      <nav>
+        <a href="{{ url_for('index', lang=lang) }}" class="{{ 'active' if request.endpoint == 'index' }}">{{ t.nav_analyse }}</a>
+        <a href="{{ url_for('stats', lang=lang) }}" class="{{ 'active' if request.endpoint == 'stats' }}">{{ t.nav_stats }}</a>
+      </nav>
+      <nav class="lang-switch" aria-label="{{ t.lang_label }}">
+        {% for code, name in lang_names.items() %}
+        <a href="{{ url_for(request.endpoint, lang=code) }}" lang="{{ code }}" data-lang="{{ code }}"
+           class="{{ 'active' if code == lang }}"{% if code == lang %} aria-current="true"{% endif %}>{{ 'EN' if code == 'en' else name }}</a>
+        {% endfor %}
+      </nav>
+    </div>
   </header>
 
   {% if demo_mode %}
-  <div class="banner">
-    Demo mode: no trained model found in <code>model/</code>, so results are random placeholders.
-  </div>
+  <div class="banner">{{ t.demo_banner }}</div>
   {% endif %}
 
   <main class="container">
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="footer">
-    LeafCheck prototype &middot; CS208 Mini Project &middot; trained on the public PlantVillage dataset &middot;
-    uploads are processed in memory and never stored
-  </footer>
-  {% block scripts %}{% endblock %}
+  <footer class="footer">{{ t.footer }}</footer>
+
+  <script id="i18n" type="application/json">{{ t | tojson }}</script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
