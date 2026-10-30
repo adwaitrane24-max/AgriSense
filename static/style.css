@@ -386,3 +386,46 @@ code { font-size: 0.9em; }
   .chip-result { left: -6px; }
   .chip-cache { right: -6px; }
 }
+
+/* =========================== Field outlook page =========================== */
+.outlook-layout { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 20px; align-items: start; }
+.map-card { position: sticky; top: 16px; }
+.district-picker { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; font-weight: 600; }
+.district-picker select {
+  font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text);
+}
+.map { height: 460px; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; z-index: 0; }
+.map-offline { display: grid; place-items: center; color: var(--muted); padding: 20px; text-align: center; }
+.outlook-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.outlook-head h2 { margin: 2px 0; }
+.btn-small { padding: 9px 16px; font-size: 0.9rem; }
+.outlook-card h3 { margin: 22px 0 10px; font-size: 1rem; }
+.days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.day {
+  display: flex; flex-direction: column; gap: 3px; padding: 10px 8px; border-radius: 10px;
+  background: var(--bg); border: 1px solid var(--border); font-size: 0.8rem; text-align: center;
+}
+.day-wet { border-color: var(--sev-medium); }
+.day-name { font-size: 0.82rem; }
+.day-temp { font-weight: 700; font-size: 0.95rem; }
+.day-meta { color: var(--muted); white-space: nowrap; }
+.risks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.risk { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); }
+.risk-high { border-color: var(--sev-high); }
+.risk-medium { border-color: var(--sev-medium); }
+.risk-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.risk p { margin: 4px 0 0; font-size: 0.88rem; }
+.soil p { margin: 0 0 10px; }
+.soil-props { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0 0 8px; }
+.soil-props dt { color: var(--muted); }
+.soil-props dd { margin: 0; font-weight: 600; }
+.tips { margin: 0; padding-left: 20px; }
+.tips li { margin-bottom: 6px; }
+@media (max-width: 900px) {
+  .outlook-layout { grid-template-columns: 1fr; }
+  .map-card { position: static; }
+  .map { height: 320px; }
+  .days { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 480px) { .days { grid-template-columns: repeat(2, 1fr); } }

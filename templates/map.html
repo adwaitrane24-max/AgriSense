@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}{{ t.map_title }} · LeafCheck{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+{% endblock %}
+{% block content %}
+<section class="intro">
+  <h1>{{ t.map_title }}</h1>
+  <p>{{ t.map_intro }}</p>
+</section>
+
+<div class="outlook-layout">
+  <section class="card map-card">
+    <label class="district-picker">
+      <span>{{ t.map_select_label }}</span>
+      <select id="district-select">
+        <option value="">{{ t.map_select_placeholder }}</option>
+        {% for d in districts %}
+        <option value="{{ d.slug }}" data-lat="{{ d.lat }}" data-lon="{{ d.lon }}">{{ d.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <div id="map" class="map" role="application" aria-label="{{ t.map_title }}"></div>
+    <p class="muted small">{{ t.map_click_hint }}</p>
+  </section>
+
+  <section class="card outlook-card" aria-live="polite">
+    <div id="outlook-placeholder" class="placeholder">{{ t.map_placeholder }}</div>
+    <p id="outlook-loading" class="placeholder" hidden>{{ t.map_loading }}</p>
+    <p id="outlook-error" class="error" role="alert" hidden></p>
+
+    <div id="outlook" hidden>
+      <div class="outlook-head">
+        <div>
+          <small class="muted">{{ t.map_location }}</small>
+          <h2 id="o-place"></h2>
+          <small id="o-coords" class="muted"></small>
+        </div>
+        <a id="o-analyse" class="btn btn-inline btn-small" href="{{ url_for('analyse', lang=lang) }}">{{ t.outlook_cta }} &rarr;</a>
+      </div>
+      <p id="o-offline" class="quality-warnings" hidden>{{ t.map_offline_note }}</p>
+
+      <h3>{{ t.weather_title }}</h3>
+      <div id="o-days" class="days"></div>
+
+      <h3>{{ t.risk_title }}</h3>
+      <ul id="o-risks" class="risks"></ul>
+      <p class="muted small">{{ t.risk_note }}</p>
+
+      <h3>{{ t.soil_title }}</h3>
+      <div class="soil">
+        <p><strong id="o-soil-type"></strong><br><span id="o-soil-desc" class="muted"></span></p>
+        <dl id="o-soil-props" class="soil-props"></dl>
+        <small id="o-soil-source" class="muted"></small>
+      </div>
+
+      <h3>{{ t.tips_title }}</h3>
+      <ul id="o-tips" class="tips"></ul>
+      <p><a href="https://kvk.icar.gov.in/" target="_blank" rel="noopener">{{ t.kvk_link }} &#8599;</a></p>
+    </div>
+  </section>
+</div>
+
+<script id="districts" type="application/json">{{ districts | tojson }}</script>
+{% endblock %}
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="{{ url_for('static', filename='map.js') }}"></script>
+{% endblock %}

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}LeafCheck{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  {% block head %}{% endblock %}
 </head>
 <body>
   <header class="topbar">
@@ -15,6 +16,7 @@
       <nav>
         <a href="{{ url_for('home', lang=lang) }}" class="{{ 'active' if request.endpoint == 'home' }}">{{ t.nav_home }}</a>
         <a href="{{ url_for('analyse', lang=lang) }}" class="{{ 'active' if request.endpoint == 'analyse' }}">{{ t.nav_analyse }}</a>
+        <a href="{{ url_for('outlook_page', lang=lang) }}" class="{{ 'active' if request.endpoint == 'outlook_page' }}">{{ t.nav_outlook }}</a>
         <a href="{{ url_for('stats', lang=lang) }}" class="{{ 'active' if request.endpoint == 'stats' }}">{{ t.nav_stats }}</a>
       </nav>
       <nav class="lang-switch" aria-label="{{ t.lang_label }}">
@@ -38,5 +40,6 @@
 
   <script id="i18n" type="application/json">{{ t | tojson }}</script>
   <script src="{{ url_for('static', filename='app.js') }}"></script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>
