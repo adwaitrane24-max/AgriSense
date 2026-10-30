@@ -11,6 +11,11 @@
   --danger: #b3261e;
   --disease: #c0622b;
   --radius: 14px;
+  /* Advisory severity badges: green, lime, amber, red */
+  --sev-none: #2f7d3b;
+  --sev-low: #a3c93a;
+  --sev-medium: #f0a830;
+  --sev-high: #c62828;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -26,6 +31,8 @@
     --warn-soft: #332914;
     --danger: #ff8a80;
     --disease: #e9915c;
+    --sev-none: #3f9a4d;
+    --sev-high: #d84040;
   }
 }
 
@@ -35,7 +42,9 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Nirmala UI (Windows) and Noto Sans Devanagari render Hindi and Marathi well */
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Nirmala UI", "Noto Sans Devanagari",
+    "Mangal", sans-serif;
 }
 
 a { color: var(--accent); }
@@ -57,6 +66,29 @@ code { font-size: 0.9em; }
   font-weight: 500;
 }
 .topbar nav a.active { color: var(--accent); }
+.topbar-right { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 10px 18px; }
+
+/* Language switcher: three small pills, the current language filled in */
+.lang-switch {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.topbar .lang-switch a {
+  margin: 0;
+  padding: 3px 12px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.topbar .lang-switch a + a { border-left: 1px solid var(--border); }
+.topbar .lang-switch a:hover { background: var(--accent-soft); }
+.topbar .lang-switch a.active { background: var(--accent); color: var(--surface); }
+@media (max-width: 480px) {
+  .topbar { flex-wrap: wrap; gap: 10px; padding: 12px 16px; }
+  .topbar-right { width: 100%; justify-content: space-between; }
+  .topbar nav a:first-child { margin-left: 0; }
+}
 
 .banner {
   padding: 10px 24px;
@@ -146,6 +178,34 @@ code { font-size: 0.9em; }
   color: var(--warn);
 }
 .not-sure small { display: block; margin-top: 6px; }
+
+/* Farmer guidance card (shown only when the server sends an advisory) */
+.advisory {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+}
+.advisory-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.card .advisory h3 { margin: 0; color: var(--text); font-size: 1rem; }
+.advisory h4 { margin: 12px 0 4px; font-size: 0.85rem; color: var(--muted); }
+.advisory p { margin: 0; }
+.advisory-steps { margin: 0; padding-left: 20px; }
+.advisory-steps li { margin-bottom: 4px; }
+.advisory p.advisory-note { margin-top: 12px; font-size: 0.85rem; color: var(--muted); }
+
+.severity {
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+}
+.severity-none { background: var(--sev-none); }
+.severity-low { background: var(--sev-low); color: #1d2a1f; }
+.severity-medium { background: var(--sev-medium); color: #1d2a1f; }
+.severity-high { background: var(--sev-high); }
 
 .top-list { margin: 0; padding-left: 20px; }
 .top-list li { margin-bottom: 10px; }
