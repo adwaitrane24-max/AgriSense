@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Stats &middot; LeafCheck{% endblock %}
+{% block content %}
+<section class="intro">
+  <h1>Cache and speed stats</h1>
+  <p>Since the server started. Repeat uploads of the same image are served from the LRU cache
+     instead of running the model again.</p>
+</section>
+
+<div class="tiles">
+  <div class="tile"><div class="tile-label">Requests</div><div class="tile-value">{{ stats.requests }}</div></div>
+  <div class="tile"><div class="tile-label">Cache hits</div><div class="tile-value">{{ stats.hits }}</div></div>
+  <div class="tile"><div class="tile-label">Cache misses</div><div class="tile-value">{{ stats.misses }}</div></div>
+  <div class="tile"><div class="tile-label">Hit rate</div><div class="tile-value">{{ (stats.hit_rate * 100) | round(1) }}%</div></div>
+</div>
+
+<div class="grid">
+  <section class="card">
+    <h2>Average response time</h2>
+    {% set hit = stats.avg_hit_ms %}{% set miss = stats.avg_miss_ms %}
+    {% set top = [hit or 0, miss or 0, 1] | max %}
+    <div class="timing">
+      <div class="timing-row">
+        <span>Cache miss (model runs)</span>
+        <div class="bar"><div class="bar-fill bar-miss" style="width: {{ ((miss or 0) / top * 100) | round(1) }}%"></div></div>
+        <strong>{{ '%.1f ms' % miss if miss is not none else '—' }}</strong>
+      </div>
+      <div class="timing-row">
+        <span>Cache hit</span>
+        <div class="bar"><div class="bar-fill bar-hit" style="width: {{ ((hit or 0) / top * 100) | round(1) }}%"></div></div>
+        <strong>{{ '%.1f ms' % hit if hit is not none else '—' }}</strong>
+      </div>
+    </div>
+    {% if hit and miss %}
+    <p class="muted">A cache hit is about <strong>{{ (miss / hit) | round | int }}&times;</strong> faster.</p>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <h2>LRU cache</h2>
+    <p class="big">{{ stats.cache_size }} <span class="muted">/ {{ stats.cache_capacity }} images</span></p>
+    <div class="bar"><div class="bar-fill bar-hit" style="width: {{ (stats.cache_size / stats.cache_capacity * 100) | round(1) }}%"></div></div>
+    <p class="muted">Key: SHA-256 of the image bytes. Lookup and insert are O(1); when full, the least
+       recently used image is evicted.</p>
+    <p><a href="{{ url_for('stats', format='json') }}">View as JSON</a></p>
+  </section>
+</div>
+{% endblock %}

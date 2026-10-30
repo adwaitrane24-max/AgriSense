@@ -23,6 +23,31 @@ ALLOWED_EXTENSIONS: frozenset[str] = frozenset({".jpg", ".jpeg", ".png"})
 # LRU cache size (number of distinct images remembered)
 CACHE_CAPACITY: int = 128
 
+# The 19 PlantVillage classes we keep, spelled exactly as TensorFlow Datasets
+# names them. The training notebook uses this same list; the real order used by
+# the model is saved in model/labels.json.
+CLASS_NAMES: tuple[str, ...] = (
+    "Corn___Cercospora_leaf_spot Gray_leaf_spot",
+    "Corn___Common_rust",
+    "Corn___Northern_Leaf_Blight",
+    "Corn___healthy",
+    "Pepper,_bell___Bacterial_spot",
+    "Pepper,_bell___healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Potato___healthy",
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___Septoria_leaf_spot",
+    "Tomato___Spider_mites Two-spotted_spider_mite",
+    "Tomato___Target_Spot",
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+    "Tomato___Tomato_mosaic_virus",
+    "Tomato___healthy",
+)
+
 # User-facing text
 NOT_SURE_MESSAGE: str = "Not sure, please consult an agriculture expert."
 DISCLAIMER: str = (
