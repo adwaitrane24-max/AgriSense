@@ -7,6 +7,7 @@ venv/
 
 # Dataset and Colab outputs (never commit the dataset)
 data/
+!leafcheck/data/
 dataset/
 PlantVillage/
 tensorflow_datasets/
