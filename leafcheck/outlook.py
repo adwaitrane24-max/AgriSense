@@ -11,6 +11,7 @@ Complexity: O(d * r) for d = 7 days and r = 15 risk rules; network calls dominat
 on a cache miss, a cache hit is O(1).
 """
 
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 from leafcheck import disease_risk, districts, soil, weather
@@ -80,7 +81,12 @@ def build_outlook(lat: float, lon: float, lang: str | None) -> dict[str, Any]:
     """Full outlook for a point. Caller must check `districts.in_maharashtra` first."""
     lang = normalise_lang(lang)
     district = districts.nearest_district(lat, lon)
-    forecast = weather.get_forecast(lat, lon)
+    # Weather and soil are independent network calls, so fetch them in parallel:
+    # the page waits for the slower one instead of both added together.
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        forecast_job = pool.submit(weather.get_forecast, lat, lon)
+        soil_job = pool.submit(soil.get_soil, lat, lon)
+        forecast, soil_raw = forecast_job.result(), soil_job.result()
     days = forecast["days"]
     names = _field(district, "name")
     return {
@@ -89,7 +95,7 @@ def build_outlook(lat: float, lon: float, lang: str | None) -> dict[str, Any]:
         "lang": lang,
         "district": {"slug": _field(district, "slug"), "name": names.get(lang) or names["en"]},
         "weather": forecast,
-        "soil": _soil_block(soil.get_soil(lat, lon), district, lang),
+        "soil": _soil_block(soil_raw, district, lang),
         "risks": [_risk_block(r, lang) for r in disease_risk.assess(days)],
         "tips": [_tip_block(t, lang) for t in disease_risk.field_tips(days)],
     }

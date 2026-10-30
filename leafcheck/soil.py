@@ -32,7 +32,7 @@ from leafcheck.ttl_cache import TTLCache
 API_URL: str = "https://rest.isric.org/soilgrids/v2.0/properties/query"
 PROPERTIES: tuple[str, ...] = ("phh2o", "clay", "sand", "silt", "soc")
 DEPTH: str = "0-5cm"
-TIMEOUT_SECONDS: float = 8
+TIMEOUT_SECONDS: float = 5.0
 DEFAULT_D_FACTOR: dict[str, float] = {"phh2o": 10, "clay": 10, "sand": 10, "silt": 10, "soc": 10}
 
 Fetcher = Callable[[str], Any]
